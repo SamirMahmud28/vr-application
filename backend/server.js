@@ -1,20 +1,25 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
+
+const connectDB = require("./config/db");
+
+dotenv.config();
+
+connectDB();
 
 const app = express();
 
 app.use(cors());
 
-const PORT = 5000;
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
+const PORT = process.env.PORT || 5000;
 
 app.get("/api/test", (req, res) => {
   res.json({
     success: true,
-    message: "Hello from Express backend!"
+    message: "Backend is working"
   });
 });
 
