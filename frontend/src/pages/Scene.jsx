@@ -33,6 +33,19 @@ export default function Scene() {
     setObjects((previousObjects) => [...previousObjects, newObject]);
   };
 
+  const handleObjectMove = (objectId, newPosition) => {
+    setObjects((previousObjects) =>
+      previousObjects.map((object) =>
+        object.id === objectId
+          ? {
+              ...object,
+              position: newPosition,
+            }
+          : object
+      )
+    );
+  };
+
   const handleSave = () => {
     console.log("Scene objects to save:", objects);
 
@@ -43,7 +56,7 @@ export default function Scene() {
 
   return (
     <div className="scene-page">
-      <SceneCanvas objects={objects} />
+      <SceneCanvas objects={objects} onObjectMove={handleObjectMove} />
 
       <div className="scene-toolbar">
         <button className="scene-button" onClick={handleSave}>
