@@ -5,11 +5,32 @@ import AddObjectDialog from "../components/scene/AddObjectDialog.jsx";
 import { loadScene, saveScene } from "../services/sceneService.js";
 import "./Scene.css";
 
+const MODEL_URLS = {
+  "custom-model-1":
+    "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF-Binary/Duck.glb",
+  "custom-model-2":
+    "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Avocado/glTF-Binary/Avocado.glb",
+};
+
+const MODEL_SCALES = {
+  cube: [1, 1, 1],
+  sphere: [1, 1, 1],
+  "custom-model-1": [0.02, 0.02, 0.02],
+  "custom-model-2": [18, 18, 18],
+};
+
+function getObjectY(type) {
+  if (type === "sphere") return 0.6;
+  if (type === "custom-model-1") return 0.02;
+  if (type === "custom-model-2") return 0.25;
+
+  return 0.5;
+}
+
 function getRandomPosition(type) {
   const x = Number((Math.random() * 10 - 5).toFixed(2));
   const z = Number((Math.random() * 8 - 4).toFixed(2));
-
-  const y = type === "sphere" ? 0.6 : 0.5;
+  const y = getObjectY(type);
 
   return [x, y, z];
 }
@@ -26,19 +47,21 @@ function createSceneObject(type) {
     type,
     position: getRandomPosition(type),
     rotation: [0, 0, 0],
-    scale: [1, 1, 1],
-    modelUrl: "",
+    scale: MODEL_SCALES[type] || [1, 1, 1],
+    modelUrl: MODEL_URLS[type] || "",
   };
 }
 
 function normalizeLoadedObject(object) {
+  const type = object.type || "cube";
+
   return {
     id: object.objectId || object.id || generateObjectId(),
-    type: object.type,
-    position: object.position || [0, object.type === "sphere" ? 0.6 : 0.5, 0],
+    type,
+    position: object.position || [0, getObjectY(type), 0],
     rotation: object.rotation || [0, 0, 0],
-    scale: object.scale || [1, 1, 1],
-    modelUrl: object.modelUrl || "",
+    scale: object.scale || MODEL_SCALES[type] || [1, 1, 1],
+    modelUrl: object.modelUrl || MODEL_URLS[type] || "",
   };
 }
 

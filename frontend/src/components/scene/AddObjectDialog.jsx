@@ -11,6 +11,16 @@ const objectOptions = [
     value: "sphere",
     description: "Add a blue sphere to the scene",
   },
+  {
+    label: "Duck Model",
+    value: "custom-model-1",
+    description: "Add a freely available GLB duck model",
+  },
+  {
+    label: "Avocado Model",
+    value: "custom-model-2",
+    description: "Add a freely available GLB avocado model",
+  },
 ];
 
 export default function AddObjectDialog({ open, onClose, onAdd }) {

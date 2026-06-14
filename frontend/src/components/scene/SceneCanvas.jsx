@@ -1,36 +1,31 @@
-import { useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Grid } from "@react-three/drei";
+import { Grid, OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 function RoomEnvironment() {
   return (
     <>
-      {/* Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />
         <meshStandardMaterial color="#2f2f2f" />
       </mesh>
 
-      {/* Back wall */}
       <mesh position={[0, 3, -6]} receiveShadow>
         <boxGeometry args={[20, 6, 0.2]} />
         <meshStandardMaterial color="#3d3d3d" />
       </mesh>
 
-      {/* Left wall */}
       <mesh position={[-10, 3, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <boxGeometry args={[12, 6, 0.2]} />
         <meshStandardMaterial color="#333333" />
       </mesh>
 
-      {/* Right wall */}
       <mesh position={[10, 3, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <boxGeometry args={[12, 6, 0.2]} />
         <meshStandardMaterial color="#262626" />
       </mesh>
 
-      {/* Floor grid helper */}
       <Grid
         args={[20, 20]}
         position={[0, 0.01, 0]}
@@ -49,8 +44,16 @@ function clampPosition(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+function GltfModel({ object }) {
+  const gltf = useGLTF(object.modelUrl);
+
+  const clonedScene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
+
+  return <primitive object={clonedScene} />;
+}
+
 function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
-  const meshRef = useRef(null);
+  const objectRef = useRef(null);
   const isDraggingRef = useRef(false);
   const dragPlaneRef = useRef(new THREE.Plane());
   const dragOffsetRef = useRef(new THREE.Vector3());
@@ -59,7 +62,8 @@ function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
   const [isDragging, setIsDragging] = useState(false);
 
   const position = object.position || [0, 0.5, 0];
-  const objectY = object.type === "sphere" ? 0.6 : 0.5;
+  const objectY = position[1] || 0.5;
+  const scale = object.scale || [1, 1, 1];
 
   const handlePointerDown = (event) => {
     event.stopPropagation();
@@ -107,7 +111,11 @@ function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
         4.8
       );
 
-      onObjectMove(object.id, [Number(nextX.toFixed(2)), objectY, Number(nextZ.toFixed(2))]);
+      onObjectMove(object.id, [
+        Number(nextX.toFixed(2)),
+        objectY,
+        Number(nextZ.toFixed(2)),
+      ]);
     }
   };
 
@@ -121,10 +129,14 @@ function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
     event.target.releasePointerCapture(event.pointerId);
   };
 
-  const commonProps = {
-    ref: meshRef,
+  const groupScale = isDragging
+    ? scale.map((value) => value * 1.15)
+    : scale;
+
+  const commonGroupProps = {
+    ref: objectRef,
     position,
-    scale: isDragging ? 1.15 : 1,
+    scale: groupScale,
     castShadow: true,
     onPointerDown: handlePointerDown,
     onPointerMove: handlePointerMove,
@@ -142,7 +154,7 @@ function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
 
   if (object.type === "sphere") {
     return (
-      <mesh {...commonProps}>
+      <mesh {...commonGroupProps}>
         <sphereGeometry args={[0.6, 32, 32]} />
         <meshStandardMaterial
           color={isDragging ? "#ffd166" : isHovered ? "#5fa8d3" : "#457b9d"}
@@ -151,8 +163,18 @@ function SceneObject({ object, onObjectMove, onDragStart, onDragEnd }) {
     );
   }
 
+  if (object.type === "custom-model-1" || object.type === "custom-model-2") {
+    return (
+      <group {...commonGroupProps}>
+        <Suspense fallback={null}>
+          <GltfModel object={object} />
+        </Suspense>
+      </group>
+    );
+  }
+
   return (
-    <mesh {...commonProps}>
+    <mesh {...commonGroupProps}>
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
         color={isDragging ? "#ffd166" : isHovered ? "#ff6b6b" : "#e63946"}
@@ -190,7 +212,6 @@ export default function SceneCanvas({ objects = [], onObjectMove }) {
     >
       <color attach="background" args={["#181818"]} />
 
-      {/* Lighting */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 8, 5]} intensity={1.2} castShadow />
 
@@ -203,7 +224,6 @@ export default function SceneCanvas({ objects = [], onObjectMove }) {
         onDragEnd={() => setIsDraggingObject(false)}
       />
 
-      {/* Mouse camera control */}
       <OrbitControls makeDefault enabled={!isDraggingObject} />
     </Canvas>
   );
