@@ -1,0 +1,53 @@
+.scene-page {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #111;
+}
+
+.scene-page canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scene-toolbar {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  right: 32px;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+.scene-button {
+  pointer-events: auto;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  background: #ef233c;
+  color: white;
+
+  padding: 10px 22px;
+  border-radius: 999px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.scene-button:hover {
+  background: #d90429;
+  transform: translateY(-2px);
+}
