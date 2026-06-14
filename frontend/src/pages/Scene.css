@@ -213,3 +213,29 @@
 .scene-secondary-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.scene-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.scene-message {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 10;
+
+  transform: translateX(-50%);
+
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+
+  padding: 9px 18px;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  backdrop-filter: blur(8px);
+}
