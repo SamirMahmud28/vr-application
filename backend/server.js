@@ -6,6 +6,7 @@ const MongoStore = require("connect-mongo");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const sceneRoutes = require("./routes/sceneRoutes");
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use(
 // Routes
 // ======================
 app.use("/api/auth", authRoutes);
+app.use("/api/scene", sceneRoutes);
 
 app.get("/api/test", (req, res) => {
   res.json({ message: "Server working" });
