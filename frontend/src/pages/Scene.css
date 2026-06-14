@@ -239,3 +239,19 @@
 
   backdrop-filter: blur(8px);
 }
+
+.scene-actions {
+  pointer-events: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scene-logout-button {
+  background: #444;
+}
+
+.scene-logout-button:hover {
+  background: #666;
+}

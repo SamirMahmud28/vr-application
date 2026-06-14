@@ -13,3 +13,13 @@ export const login = (data) => {
     withCredentials: true,
   });
 };
+
+export const logout = () => {
+  return axios.post(
+    `${API}/logout`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};

@@ -1,3 +1,4 @@
+import { logout as logoutUser } from "../services/authService.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SceneCanvas from "../components/scene/SceneCanvas.jsx";
@@ -131,6 +132,16 @@ export default function Scene() {
     );
   };
 
+  const handleLogout = async () => {
+  try {
+    await logoutUser();
+    navigate("/login");
+  } catch (error) {
+    console.error("Logout failed:", error);
+    alert("Logout failed. Please try again.");
+  }
+};
+
   const handleSave = async () => {
     try {
       setIsSavingScene(true);
@@ -162,13 +173,22 @@ export default function Scene() {
       <SceneCanvas objects={objects} onObjectMove={handleObjectMove} />
 
       <div className="scene-toolbar">
-        <button
-          className="scene-button"
-          onClick={handleSave}
-          disabled={isSavingScene || isLoadingScene}
-        >
-          {isSavingScene ? "Saving..." : "Save"}
-        </button>
+        <div className="scene-actions">
+  <button
+    className="scene-button"
+    onClick={() => setIsAddDialogOpen(true)}
+    disabled={isLoadingScene}
+  >
+    Add Objects
+  </button>
+
+  <button
+    className="scene-button scene-logout-button"
+    onClick={handleLogout}
+  >
+    Logout
+  </button>
+</div>
 
         <div className="scene-object-count">
           {isLoadingScene ? "Loading scene..." : `Objects: ${objects.length}`}

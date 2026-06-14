@@ -51,5 +51,23 @@ const login = async (req, res) => {
   }
 };
 
+
+// LOGOUT
+const logout = (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Logout failed",
+      });
+    }
+
+    res.clearCookie("connect.sid");
+
+    return res.json({
+      message: "Logout successful",
+    });
+  });
+};
+
 // IMPORTANT EXPORT
-module.exports = { signup, login };
+module.exports = { signup, login, logout };
