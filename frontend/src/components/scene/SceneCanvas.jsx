@@ -43,25 +43,37 @@ function RoomEnvironment() {
   );
 }
 
-function DemoObjects() {
-  return (
-    <>
-      {/* Demo cube */}
-      <mesh position={[-1.5, 0.5, 0]} castShadow>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#e63946" />
-      </mesh>
+function SceneObject({ object }) {
+  const position = object.position || [0, 0.5, 0];
 
-      {/* Demo sphere */}
-      <mesh position={[1.5, 0.6, -1]} castShadow>
+  if (object.type === "sphere") {
+    return (
+      <mesh position={position} castShadow>
         <sphereGeometry args={[0.6, 32, 32]} />
         <meshStandardMaterial color="#457b9d" />
       </mesh>
+    );
+  }
+
+  return (
+    <mesh position={position} castShadow>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#e63946" />
+    </mesh>
+  );
+}
+
+function SceneObjects({ objects }) {
+  return (
+    <>
+      {objects.map((object) => (
+        <SceneObject key={object.id} object={object} />
+      ))}
     </>
   );
 }
 
-export default function SceneCanvas() {
+export default function SceneCanvas({ objects = [] }) {
   return (
     <Canvas
       shadows
@@ -77,7 +89,7 @@ export default function SceneCanvas() {
       <directionalLight position={[5, 8, 5]} intensity={1.2} castShadow />
 
       <RoomEnvironment />
-      <DemoObjects />
+      <SceneObjects objects={objects} />
 
       {/* Mouse camera control */}
       <OrbitControls makeDefault />

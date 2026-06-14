@@ -51,3 +51,165 @@
   background: #d90429;
   transform: translateY(-2px);
 }
+
+.scene-object-count {
+  pointer-events: auto;
+
+  color: white;
+  background: rgba(0, 0, 0, 0.55);
+
+  padding: 9px 18px;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  backdrop-filter: blur(8px);
+}
+
+.scene-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.scene-dialog {
+  width: min(92vw, 380px);
+
+  background: #202020;
+  color: white;
+
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  padding: 22px;
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+}
+
+.scene-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+.scene-dialog-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.scene-dialog-close {
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+
+  font-size: 24px;
+  line-height: 1;
+}
+
+.scene-dialog-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.scene-dialog-text {
+  margin: 0 0 18px;
+
+  color: #cccccc;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.scene-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scene-radio-option {
+  cursor: pointer;
+
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+
+  padding: 14px;
+
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scene-radio-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scene-radio-option input {
+  margin-top: 4px;
+}
+
+.scene-radio-option span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scene-radio-option small {
+  color: #b8b8b8;
+  font-size: 13px;
+}
+
+.scene-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.scene-primary-button,
+.scene-secondary-button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  padding: 9px 18px;
+  border-radius: 999px;
+
+  font-weight: 700;
+}
+
+.scene-primary-button {
+  background: #ef233c;
+  color: white;
+}
+
+.scene-primary-button:hover {
+  background: #d90429;
+}
+
+.scene-secondary-button {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
+.scene-secondary-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
