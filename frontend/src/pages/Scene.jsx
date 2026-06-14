@@ -15,13 +15,13 @@ const MODEL_URLS = {
 const MODEL_SCALES = {
   cube: [1, 1, 1],
   sphere: [1, 1, 1],
-  "custom-model-1": [0.02, 0.02, 0.02],
+  "custom-model-1": [0.35, 0.35, 0.35],
   "custom-model-2": [18, 18, 18],
 };
 
 function getObjectY(type) {
   if (type === "sphere") return 0.6;
-  if (type === "custom-model-1") return 0.02;
+  if (type === "custom-model-1") return 0.35;
   if (type === "custom-model-2") return 0.25;
 
   return 0.5;
