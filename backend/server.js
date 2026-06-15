@@ -14,14 +14,28 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.set("trust proxy", 1);
 
 // ======================
 // Middlewares
 // ======================
-app.use(cors({
-  origin: "http://localhost:5173", // React frontend
-  credentials: true
-}));
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
@@ -37,10 +51,11 @@ app.use(
       mongoUrl: process.env.MONGO_URI,
     }),
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      httpOnly: true,
-      secure: false // keep false for local dev
-    },
+  maxAge: 1000 * 60 * 60 * 24,
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+},
   })
 );
 

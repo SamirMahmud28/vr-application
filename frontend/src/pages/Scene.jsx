@@ -173,35 +173,35 @@ export default function Scene() {
       <SceneCanvas objects={objects} onObjectMove={handleObjectMove} />
 
       <div className="scene-toolbar">
-        <div className="scene-actions">
   <button
     className="scene-button"
-    onClick={() => setIsAddDialogOpen(true)}
-    disabled={isLoadingScene}
+    onClick={handleSave}
+    disabled={isSavingScene || isLoadingScene}
   >
-    Add Objects
+    {isSavingScene ? "Saving..." : "Save"}
   </button>
 
-  <button
-    className="scene-button scene-logout-button"
-    onClick={handleLogout}
-  >
-    Logout
-  </button>
+  <div className="scene-object-count">
+    {isLoadingScene ? "Loading scene..." : `Objects: ${objects.length}`}
+  </div>
+
+  <div className="scene-actions">
+    <button
+      className="scene-button"
+      onClick={() => setIsAddDialogOpen(true)}
+      disabled={isLoadingScene}
+    >
+      Add Objects
+    </button>
+
+    <button
+      className="scene-button scene-logout-button"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+  </div>
 </div>
-
-        <div className="scene-object-count">
-          {isLoadingScene ? "Loading scene..." : `Objects: ${objects.length}`}
-        </div>
-
-        <button
-          className="scene-button"
-          onClick={() => setIsAddDialogOpen(true)}
-          disabled={isLoadingScene}
-        >
-          Add Objects
-        </button>
-      </div>
 
       {sceneMessage && <div className="scene-message">{sceneMessage}</div>}
 

@@ -61,7 +61,12 @@ const logout = (req, res) => {
       });
     }
 
-    res.clearCookie("connect.sid");
+    res.clearCookie("connect.sid", {
+  path: "/",
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+});
 
     return res.json({
       message: "Logout successful",
