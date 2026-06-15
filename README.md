@@ -83,3 +83,30 @@ Planned features:
 - Object transformation (scale, rotate)
 - Save scene state to MongoDB
 - Load saved scene on login
+
+Current Status
+
+Core application features are completed:
+
+Signup and login
+Session-based authentication
+MongoDB session storage
+Protected 3D scene page
+Add cube, sphere, and GLB custom models
+Drag and move objects in the 3D scene
+Save scene state to MongoDB
+Load saved scene after login
+Logout flow
+Repository
+
+GitHub: https://github.com/SamirMahmud28/vr-application
+
+Live Demo
+
+Live Demo: https://vr-application-sigma.vercel.app
+
+Submission Notes
+
+Detailed submission notes are available here:
+
+docs/SUBMISSION_NOTES.md
